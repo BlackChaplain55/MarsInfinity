@@ -1,0 +1,22 @@
+electricity = require("electricity");
+
+global.station = new Object {
+};
+
+class Module{
+  constructor(Name) {
+  	this.Name=Name;
+  	this.BatteriesCapacity=0;
+  	this.SolarBatteries = Array{1,2,3};
+  };
+
+function init_station(){
+	var SkySpear = new Module('SkySpear');
+	var Sakura = new Module('Sakura');
+	var Science = new Module('Science');
+	var Constellation = new Module('Constellation');
+	var Dragon = new Module('Dragon');
+	var Federation = new Module('Federation');
+	var Alabama = new Module('Alabama');
+	global.station.modules={SkySpear,Sakura,Science,Constellation,Dragon,Federation,Alabama};
+};

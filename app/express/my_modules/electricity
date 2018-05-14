@@ -1,0 +1,8 @@
+Class SolarBatterie{
+	constructor(Name,MaxPower)
+		this.Name = Name;
+		this.Exposition = 0;
+		this.MaxPower = MaxPower;
+		this.Working = true;
+		this.AutoExposition = true;
+};
