@@ -2,6 +2,7 @@ var express = require("express"),
 http = require("http"),
 path = require("path"),
 tools = require("./my_modules/tools"),
+station_objects = require("./my_modules/station_objects"),
 app,
 client_dir,
 mission_time;
@@ -18,6 +19,8 @@ app.use(express.static(client_dir));
 
 http.createServer(app).listen(3000);
 console.log('Server running at http://localhost:3000/');
+console.log();
+station_objects.init_station();
 //console.log('Client DIR:'+ client_dir);
 
 // настраиваем маршруты
@@ -32,16 +35,33 @@ app.get("/mission_time.json", function (req, res) {
 	res.json(tools.num_to_time(mission_time));
 });
 
-app.post("/todos", function (req, res) {
-	console.log("Данные были отправлены на сервер!");
-	// простой объект отправлен обратно
-	res.json({"message":"Вы размещаетесь на сервере!"});
+
+app.get("/get_solar_batteries.json", function (req, res) {
+	var batteries = station.SkySpear.SolarBatteries;
+	//console.log('Cocpit request. for batterie status..')
+	res.json(batteries);
+});
+
+app.get("/get_orbit.json", function (req, res) {
+	var orbit = station.orbit;
+	//console.log('Cocpit request. for orbit..'+station.orbit)
+	res.json(orbit);
 });
 
 // Обработка периодических событий
 
 setInterval(function () {
 	mission_time =++mission_time;
-console.clear();
-console.log("Mission_time: "+tools.num_to_time(mission_time)); 
+	
+	//console.clear();
+	//console.log("Mission_time: "+tools.num_to_time(mission_time)); 
 }, 1000);
+
+setInterval(function () {
+	station_objects.recalc_electricity();
+	station_objects.recalc_g();
+},3000);
+
+app.get("/station.json", function (req, res) {
+	res.json(global.station);
+});

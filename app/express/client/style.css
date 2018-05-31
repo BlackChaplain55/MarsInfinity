@@ -1,4 +1,4 @@
-.air-container { 
+.sb-container { 
     width: 400px; 
     background: #001155;
     padding: 5px;
@@ -6,19 +6,45 @@
     border: solid 1px white; 
     top: 50;
     left:5;
-    height: 200;
+    height: 400;
     position: :absolute;
     border-radius: 10px;
    }
 
-   .common-container { 
+.common-container { 
     width: 400px; 
     background: #001155;
     left: 440px;
     top: 67px;
-    height: 200px;
+    height: 400px;
     padding: 5px;
     border: solid 1px white; 
     position: absolute;
 	border-radius: 10px;
    }
+
+.orbit-view { 
+    width: 400px; 
+    background: #001155;
+    left: 855px;
+    top: 67px;
+    height: 400px;
+    padding: 5px;
+    border: solid 1px white; 
+    position: absolute;
+    border-radius: 10px;
+   }
+
+   .small-input {
+    width:50;
+    color: black;
+   }
+
+   * {
+    color:yellow;
+   }
+
+   canvas {
+    background-color: #000840;
+    border: 1px black; 
+    }

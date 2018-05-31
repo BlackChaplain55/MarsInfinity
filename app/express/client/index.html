@@ -3,15 +3,33 @@
 </head>
 
 <body bgcolor=#001111>
-<h1 align=center><font color=yellow>Центр управления КС "Голиаф"<font></h1>
-<div class="air-container">
-	<H3 align=center>Состояние атмосферы</H3>
+<h1 align=center><font color=yellow>Центр управления КС "Арес"<font></h1>
+<div class="sb-container">
+	<H3 align=center>Состояние солнечных батарей</H3>
+	<Table>
+		<tr>
+			<td>Блок батарей:<td>Мощность<td>Статус
+		<tr>
+			<td>Блок А:		<td><input type="text" id="SB-block-A" class="small-input">кВт<td><input type="text" id="SB-block-A-stat" class="small-input">
+		<tr>
+			<td>Блок B:		<td><input type="text" id="SB-block-B" class="small-input">кВт<td><input type="text" id="SB-block-B-stat" class="small-input">
+		<tr>
+			<td>Блок C:		<td><input type="text" id="SB-block-C" class="small-input">кВт<td><input type="text" id="SB-block-C-stat" class="small-input">
+		<tr>
+			<td>Блок D:		<td><input type="text" id="SB-block-D" class="small-input">кВт<td><input type="text" id="SB-block-D-stat" class="small-input">
+	</Table>
 </div>
 <div class="common-container">
 	<H3 align=center>Общие данные миссии</H3>
 	<p>Время миссии:</p>
 	<input type="text" id="mission-time">
 </div>
+<div class = "orbit-view">
+	<canvas id="canvas" width="400" height="400"></canvas>
+</div>
 	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 	<script src="app.js"></script>
+ 
+}
+</script>
 </body>
