@@ -7,7 +7,7 @@ post_routes	= require("./my_modules/post_module"),
 app,
 client_dir,
 mission_time,
-time_scale=	10,
+time_scale=	5,
 view_scale=	15000,
 Mars	  = new Mars();
 
@@ -79,9 +79,9 @@ app.post("/set_scale.json", function (req, res) {
 
 setInterval(function () {
 	mission_time =+mission_time+time_scale*20;
-	
+
 	//console.clear();
-	//console.log("Mission_time: "+tools.num_to_time(mission_time)); 
+	//console.log("Mission_time: "+tools.num_to_time(mission_time));
 }, 1000);
 
 setInterval(function () {

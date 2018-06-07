@@ -1,5 +1,5 @@
 
-var orbit = 0; 
+var orbit = 0;
 var w;
 var cam_shift_x=0;
 var cam_shift_y=0;
@@ -31,7 +31,7 @@ var main = function () {
 
 		// Вычисляем центр и рисуем "крест"
 
-      	
+
 		//cxs = cx-orbit.shift/scale;
 		//cys = cy-orbit.shift/3/scale
 
@@ -40,7 +40,7 @@ var main = function () {
 		//рисуем планету
 
 		ctx.fillStyle = "#771700";             // Атмосфера
-		ctx.lineWidth = 1; 
+		ctx.lineWidth = 1;
  		ctx.strokeStyle = "#cc6e14";
       	ctx.beginPath();
       	ctx.setLineDash([]);
@@ -49,7 +49,7 @@ var main = function () {
 		ctx.stroke();
 
       	ctx.fillStyle = "#9b3400";             // Планета
-		ctx.lineWidth = 1; 
+		ctx.lineWidth = 1;
  		ctx.strokeStyle = "#e0bc2b";
       	ctx.beginPath();
       	ctx.setLineDash([]);
@@ -62,13 +62,13 @@ var main = function () {
 		ctx.lineWidth = 1;
 		ctx.setLineDash([1,5]);
 		ctx.strokeStyle = "#aaaaaa";
-		ctx.beginPath();      	
+		ctx.beginPath();
       	ctx.ellipse(cx, canvas_height, 2000, cy,0, 0, 2*Math.PI);
       	ctx.stroke();
 
       	//"меридианы"
 
-		ctx.lineWidth = 1; 
+		ctx.lineWidth = 1;
  		ctx.strokeStyle = "#ffffff";
  		ctx.setLineDash([2,4]);
 
@@ -78,21 +78,21 @@ var main = function () {
  		var Mars_w_hemi2 = Math.abs(Math.sin(DegToRad(Mars_mars_w2)));
 
  		if ((90>=Mars.mars_w&&Mars.mars_w>=0)||(270>=Mars.mars_w&&Mars.mars_w>=180)){
- 			ctx.beginPath();      	
+ 			ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi, DegToRad(117), 2 * Math.PI, Math.PI);
       		ctx.stroke();
       	} else {
-      		ctx.beginPath();      	
+      		ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi, DegToRad(117), Math.PI, 2 * Math.PI);
       		ctx.stroke();
       	};
 
       	if ((90>=Mars_mars_w2&&Mars_mars_w2>=0)||(270>=Mars_mars_w2&&Mars_mars_w2>=180)){
- 			ctx.beginPath();      	
+ 			ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi2, DegToRad(117), 2 * Math.PI, Math.PI);
       		ctx.stroke();
       	} else {
-      		ctx.beginPath();      	
+      		ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi2, DegToRad(117), Math.PI, 2 * Math.PI);
       		ctx.stroke();
       	};
@@ -101,17 +101,17 @@ var main = function () {
       	//var RotShift = Mars.mars_w>180?Mars.mars_w-180:Mars.mars_w;
       	var RotShift = (Mars.mars_w*2.5)%5;
 
-      	ctx.beginPath();      	
+      	ctx.beginPath();
       	ctx.ellipse(cx, cy, R/scale, R/scale/3, DegToRad(27), 2 * Math.PI+DegToRad(RotShift), Math.PI);
       	ctx.stroke();
 
-      	ctx.beginPath();      	
+      	ctx.beginPath();
 		ctx.ellipse(cx+Math.sin(DegToRad(27))*R/scale/2, cy-Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), 2 * Math.PI-0.2+DegToRad(RotShift), Math.PI+0.2);
       	ctx.stroke();
 
-      	ctx.beginPath();      	
+      	ctx.beginPath();
 		ctx.ellipse(cx-Math.sin(DegToRad(27))*R/scale/2, cy+Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), 2 * Math.PI+0.2+DegToRad(RotShift), Math.PI-0.2);
-      	ctx.stroke();	
+      	ctx.stroke();
 
       	ctx.beginPath();
       	ctx.moveTo(cx+Math.sin(DegToRad(-27))*(R/scale+20), cy+Math.cos(DegToRad(-27))*(R/scale+20));
@@ -121,7 +121,7 @@ var main = function () {
 		cxs = cx+orbit.shift*Math.cos(DegToRad(orbit.F+27))/scale;
 		cys = cy+orbit.shift*Math.sin(DegToRad(orbit.F+27))/3/scale
 
-		ctx.lineWidth = 1; 
+		ctx.lineWidth = 1;
  		ctx.strokeStyle = "#aaaaff";
       	ctx.setLineDash([2,8]);
 
@@ -138,38 +138,38 @@ var main = function () {
 
 		ctx.strokeStyle = "#117777";
 
-		ctx.beginPath();      	
+		ctx.beginPath();
       	ctx.ellipse(cx, cy, R/scale, R/scale/3, DegToRad(27), Math.PI+DegToRad(RotShift), 2 * Math.PI);
       	ctx.stroke();
 
       	if ((90>=Mars.mars_w&&Mars.mars_w>=0)||(270>=Mars.mars_w&&Mars.mars_w>=180)){
- 			ctx.beginPath();      	
+ 			ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi, DegToRad(117), Math.PI, 2*Math.PI);
       		ctx.stroke();
       	} else {
-      		ctx.beginPath();      	
+      		ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi, DegToRad(117),  2 *Math.PI, Math.PI);
       		ctx.stroke();
       	};
 
       	if ((90>=Mars_mars_w2&&Mars_mars_w2>=0)||(270>=Mars_mars_w2&&Mars_mars_w2>=180)){
- 			ctx.beginPath();      	
+ 			ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi2, DegToRad(117), Math.PI, 2 *Math.PI);
       		ctx.stroke();
       	} else {
-      		ctx.beginPath();      	
+      		ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi2, DegToRad(117),  2 *Math.PI, Math.PI);
       		ctx.stroke();
       	};
 
 
-      	ctx.beginPath();      	
+      	ctx.beginPath();
 		ctx.ellipse(cx+Math.sin(DegToRad(27))*R/scale/2, cy-Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), Math.PI+DegToRad(RotShift), 2 * Math.PI);
       	ctx.stroke();
 
-      	ctx.beginPath();      	
+      	ctx.beginPath();
 		ctx.ellipse(cx-Math.sin(DegToRad(27))*R/scale/2, cy+Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), Math.PI-0.2+DegToRad(RotShift), 2 * Math.PI+0.2);
-      	ctx.stroke();	
+      	ctx.stroke();
 
 		//station orbit and trace
 
@@ -240,7 +240,7 @@ var main = function () {
 		var F = orbit.F+27;
 		var a = (orbit.a/scale);
 		var b = (orbit.b/scale/(3-2*Math.sin(DegToRad(orbit.P))));
-		
+
 
 		var x = (a * Math.cos(DegToRad(w)))*Math.cos(DegToRad(F))-(b * Math.sin(DegToRad(w)))*Math.sin(DegToRad(F))+cxs-30;
 		var y = (a * Math.cos(DegToRad(w)))*Math.sin(DegToRad(F))+(b * Math.sin(DegToRad(w)))*Math.cos(DegToRad(F))+cys-4;
@@ -251,7 +251,7 @@ var main = function () {
 		ctx.fillStyle = "white";
         ctx.fillText("Цитадель", x, y);
 		//ctx.stroke();
-		
+
 		requestAnimationFrame(plot);
 	};
 
@@ -265,67 +265,68 @@ var main = function () {
 		$("#mission-time").text(mission_time);
 		$("#orbit-w").text(orbit.w_speed);
 		$("#orbit-v").text(orbit.v);
+    $("#orbit-h").text(orbit.h-R);
 		$("#p-shadow").text(orbit.shadow);
 		$("#a-shadow").text(orbit.atmo_shadow);
 		//console.log(mission_time);
 	}
 
-	$("#apogee-down").on("click", function () {	
+	$("#apogee-down").on("click", function () {
 		var new_apogee = +$("#apogee-val").val()-100000;
 		SetOrbit(new_apogee,+$("#perigee-val").val(),+$("#b-val").val(),+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#apogee-up").on("click", function () {	
+	$("#apogee-up").on("click", function () {
 		var new_apogee = +$("#apogee-val").val()+100000;
 		SetOrbit(new_apogee,+$("#perigee-val").val(),+$("#b-val").val(),+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#perigee-down").on("click", function () {	
+	$("#perigee-down").on("click", function () {
 		var new_perigee = +$("#perigee-val").val()-100000;
 		SetOrbit(+$("#apogee-val").val(),new_perigee,+$("#b-val").val(),+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#perigee-up").on("click", function () {	
+	$("#perigee-up").on("click", function () {
 		var new_perigee = +$("#perigee-val").val()+100000;
 		SetOrbit(+$("#apogee-val").val(),new_perigee,+$("#b-val").val(),+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#b-up").on("click", function () {	
+	$("#b-up").on("click", function () {
 		var new_b = +$("#b-val").val()+100000;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),new_b,+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#b-down").on("click", function () {	
+	$("#b-down").on("click", function () {
 		var new_b = +$("#b-val").val()-100000;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),new_b,+$("#f-val").val(),+$("#p-val").val())
 	})
 
-	$("#f-up").on("click", function () {	
+	$("#f-up").on("click", function () {
 		var new_f = +$("#f-val").val()+5;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),+$("#b-val").val(),new_f,+$("#p-val").val())
 	})
 
-	$("#f-down").on("click", function () {	
+	$("#f-down").on("click", function () {
 		var new_f = +$("#f-val").val()-5;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),+$("#b-val").val(),new_f,+$("#p-val").val())
 	})
 
-	$("#p-up").on("click", function () {	
+	$("#p-up").on("click", function () {
 		var new_p = +$("#p-val").val()+5;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),+$("#b-val").val(),+$("#f-val").val(),new_p)
 	})
 
-	$("#p-down").on("click", function () {	
+	$("#p-down").on("click", function () {
 		var new_p = +$("#p-val").val()-5;
 		SetOrbit(+$("#apogee-val").val(),+$("#perigee-val").val(),+$("#b-val").val(),+$("#f-val").val(),new_p)
 	})
 
-	$("#scale-up").on("click", function () {	
+	$("#scale-up").on("click", function () {
 		var new_scale = +$("#scale-val").val()+1000;
 		SetScale(new_scale);
 	})
 
-	$("#scale-down").on("click", function () {	
+	$("#scale-down").on("click", function () {
 		var new_scale = +$("#scale-val").val()-1000;
 		SetScale(new_scale);
 	})
@@ -342,7 +343,7 @@ var main = function () {
 		$.post("/set_scale.json", msg_data, function (response) {
 		});
 	}
-	
+
 	function DegToRad(deg){
 		return deg/180*Math.PI;
 	}
@@ -360,10 +361,10 @@ var main = function () {
 		$.getJSON("/mission_time.json",	function (value) {
 			mission_time = value;
 		});
-		
+
 		fill();
 		//plot();
-	}, 50); 
+	}, 50);
 
 	var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
