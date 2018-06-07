@@ -1,22 +1,83 @@
-electricity = require("electricity");
+electricity = require("./electricity");
+orbit_module		= require("./orbit.js")
 
-global.station = new Object {
-};
+Citadel = new Object();
 
-class Module{
+global.station = Citadel;
+
+
+class Space_Module{
   constructor(Name) {
   	this.Name=Name;
   	this.BatteriesCapacity=0;
-  	this.SolarBatteries = Array{1,2,3};
+  	this.PowerProduction=0;
+  	this.SolarBatteries = [];
   };
+ };
 
-function init_station(){
-	var SkySpear = new Module('SkySpear');
-	var Sakura = new Module('Sakura');
-	var Science = new Module('Science');
-	var Constellation = new Module('Constellation');
-	var Dragon = new Module('Dragon');
-	var Federation = new Module('Federation');
-	var Alabama = new Module('Alabama');
-	global.station.modules={SkySpear,Sakura,Science,Constellation,Dragon,Federation,Alabama};
+module.exports.init_station = function(){
+	Citadel.SkySpear = new Space_Module('SkySpear');
+	Citadel.Sakura = new Space_Module('Sakura');
+	Citadel.Science = new Space_Module('Science');
+	Citadel.Constellation = new Space_Module('Constellation');
+	Citadel.Dragon = new Space_Module('Dragon');
+	Citadel.Federation = new Space_Module('Federation');
+	Citadel.Alabama = new Space_Module('Alabama');
+
+	Citadel.g = 0;
+	Citadel.roll_speed = 0;
+	Citadel.pitch_speed = 0;
+	Citadel.yaw_speed = 0;
+	Citadel.roll = 0;
+	Citadel.pitch = 0;
+	Citadel.yaw =0;
+	Citadel.x_speed = 0;
+	Citadel.y_speed = 0;
+	Citadel.z_speed = 0;
+
+	Citadel.orbit = new orbit_module.orbit;
+
+	console.log("Station initialization succesfull. Waiting modules initializaton...")
+	console.log();
+	init_skyspear(Citadel.SkySpear);
+
+	
 };
+
+function init_skyspear(SkySpear){
+	console.log('   <<< SkySpear initialization start >>>');
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A1',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A2',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B1',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B2',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B3',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B4',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C1',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C2',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C3',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C4',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D1',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D2',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D3',100));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D4',100));
+	SkySpear.SolarBatteries.forEach(function(item,i,arr){
+		item.CalcSBPower();
+		SkySpear.PowerProduction=SkySpear.PowerProduction+item.Power;
+	})
+	console.log('      SkySpear: Solar batteries initialized................................OK');
+	console.log('      SkySpear: Solar batteries power production....................'+SkySpear.PowerProduction.toFixed(2)+' kW');
+	console.log('   <<< SkySpear initialization finished succesfully >>>');
+	console.log();
+};
+
+module.exports.recalc_electricity = function(){
+	Citadel.SkySpear.SolarBatteries.forEach(function(item,i,arr){
+		item.CalcSBPower();
+		//console.log(item.Name+item.Power);
+		Citadel.SkySpear.PowerProduction=Citadel.SkySpear.PowerProduction+item.Power;
+	})
+};
+
+module.exports.recalc_g = function(){
+	Citadel.g = 10*Citadel.roll_speed^2;
+}

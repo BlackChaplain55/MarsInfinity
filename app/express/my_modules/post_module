@@ -1,0 +1,10 @@
+var app;
+var express = require("express"),
+app = express(),
+station_objects = require("./station_objects");
+
+app.post("/set_orbit_apogee.json", function (req, res) {
+	console.log("Запрос коррекции орбиты! - "+req.body);
+	station.orbit.apogee = req.body;
+	res.json({"message":" Орбита скорректирована"});
+});

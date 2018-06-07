@@ -1,8 +1,20 @@
-Class SolarBatterie{
-	constructor(Name,MaxPower)
+
+module.exports.SolarBatterie = function (Name,MaxPower){
 		this.Name = Name;
-		this.Exposition = 0;
+		this.Exposition = 100;
 		this.MaxPower = MaxPower;
 		this.Working = true;
 		this.AutoExposition = true;
-};
+		this.Power = 0;
+		this.Efficiency = 100;
+		this.status = 'Норма';
+
+		this.CalcSBPower = function(shadow,atmo_shadow){
+			if (atmo_shadow){this.Efficiency=50}
+			if (shadow){this.Efficiency=0}
+			var random_deviation = Math.round((Math.random()*10-5)*100)/100;
+			this.Power = this.MaxPower*(this.Efficiency+random_deviation)/100*this.Exposition/100*0.43;
+			this.Power = +this.Power.toFixed(2);
+			//console.log('Solar batterie '+this.Name+' power output '+this.Power);
+		};
+	};
