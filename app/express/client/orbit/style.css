@@ -3,3 +3,26 @@
 
    }
 
+.orbit_control
+{
+ background-color: #555555
+ width:200px;
+ height:400px;
+ left: 5px;
+ top:5px;
+ position:absolute;
+ border-radius: 5px;
+ color:yellow;
+ border: 1px blue; 
+
+}
+
+td{
+    text-decoration-color: yellow;
+    font-size: 12px;
+    color:yellow;
+}
+
+input{
+    font-size: 12px;
+}

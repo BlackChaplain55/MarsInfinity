@@ -58,6 +58,8 @@ var main = function () {
 			});
 		};
 
+		
+
 	var insertTimeIntoDOM = function (mission_time) {
 		//console.log(data);
 		//console.log(mission_time);

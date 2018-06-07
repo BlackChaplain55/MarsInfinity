@@ -1,9 +1,10 @@
 electricity = require("./electricity");
 orbit_module		= require("./orbit.js")
 
-Ares = new Object();
+Citadel = new Object();
 
-global.station = Ares;
+global.station = Citadel;
+
 
 class Space_Module{
   constructor(Name) {
@@ -15,30 +16,30 @@ class Space_Module{
  };
 
 module.exports.init_station = function(){
-	Ares.SkySpear = new Space_Module('SkySpear');
-	Ares.Sakura = new Space_Module('Sakura');
-	Ares.Science = new Space_Module('Science');
-	Ares.Constellation = new Space_Module('Constellation');
-	Ares.Dragon = new Space_Module('Dragon');
-	Ares.Federation = new Space_Module('Federation');
-	Ares.Alabama = new Space_Module('Alabama');
+	Citadel.SkySpear = new Space_Module('SkySpear');
+	Citadel.Sakura = new Space_Module('Sakura');
+	Citadel.Science = new Space_Module('Science');
+	Citadel.Constellation = new Space_Module('Constellation');
+	Citadel.Dragon = new Space_Module('Dragon');
+	Citadel.Federation = new Space_Module('Federation');
+	Citadel.Alabama = new Space_Module('Alabama');
 
-	Ares.g = 0;
-	Ares.roll_speed = 0;
-	Ares.pitch_speed = 0;
-	Ares.yaw_speed = 0;
-	Ares.roll = 0;
-	Ares.pitch = 0;
-	Ares.yaw =0;
-	Ares.x_speed = 0;
-	Ares.y_speed = 0;
-	Ares.z_speed = 0;
+	Citadel.g = 0;
+	Citadel.roll_speed = 0;
+	Citadel.pitch_speed = 0;
+	Citadel.yaw_speed = 0;
+	Citadel.roll = 0;
+	Citadel.pitch = 0;
+	Citadel.yaw =0;
+	Citadel.x_speed = 0;
+	Citadel.y_speed = 0;
+	Citadel.z_speed = 0;
 
-	Ares.orbit = new orbit_module.orbit;
+	Citadel.orbit = new orbit_module.orbit;
 
 	console.log("Station initialization succesfull. Waiting modules initializaton...")
 	console.log();
-	init_skyspear(Ares.SkySpear);
+	init_skyspear(Citadel.SkySpear);
 
 	
 };
@@ -64,19 +65,19 @@ function init_skyspear(SkySpear){
 		SkySpear.PowerProduction=SkySpear.PowerProduction+item.Power;
 	})
 	console.log('      SkySpear: Solar batteries initialized................................OK');
-	console.log('      SkySpear: Solar batteries power production.....................'+SkySpear.PowerProduction+' kW');
+	console.log('      SkySpear: Solar batteries power production....................'+SkySpear.PowerProduction.toFixed(2)+' kW');
 	console.log('   <<< SkySpear initialization finished succesfully >>>');
 	console.log();
 };
 
 module.exports.recalc_electricity = function(){
-	Ares.SkySpear.SolarBatteries.forEach(function(item,i,arr){
+	Citadel.SkySpear.SolarBatteries.forEach(function(item,i,arr){
 		item.CalcSBPower();
 		//console.log(item.Name+item.Power);
-		Ares.SkySpear.PowerProduction=Ares.SkySpear.PowerProduction+item.Power;
+		Citadel.SkySpear.PowerProduction=Citadel.SkySpear.PowerProduction+item.Power;
 	})
 };
 
 module.exports.recalc_g = function(){
-	Ares.g = 10*Ares.roll_speed^2;
+	Citadel.g = 10*Citadel.roll_speed^2;
 }

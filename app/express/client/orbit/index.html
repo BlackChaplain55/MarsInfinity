@@ -6,6 +6,27 @@
 <div class = "orbit-view">
 	<canvas id="canvas" width="1600" height="900"></canvas>
 </div>
+<div class = "orbit_control">
+	<h3>Кнопки</h3>
+	<table>
+		<tr>
+			<td>Апогей</td><td><input type="text" id="apogee-val"><td><input type="button" id="apogee-down" value="-"><input type="button" id="apogee-up" value="+">
+		<tr>
+			<td>Перигей</td><td><input type="text" id="perigee-val"><td><input type="button" id="perigee-down" value="-"><input type="button" id="perigee-up" value="+">
+		<tr>
+			<td>М. полуось</td><td><input type="text" id="b-val"><td><input type="button" id="b-down" value="-"><input type="button" id="b-up" value="+">
+		<tr>
+			<td>Склонение</td><td><input type="text" id="f-val"><td><input type="button" id="f-down" value="-"><input type="button" id="f-up" value="+">
+		<tr>
+			<td>Долгота ВУ</td><td><input type="text" id="p-val"><td><input type="button" id="p-down" value="-"><input type="button" id="p-up" value="+">
+		<tr>
+			<td>Масштаб</td><td><input type="text" id="scale-val"><td><input type="button" id="scale-down" value="-"><input type="button" id="scale-up" value="+">
+		<tr>
+			<td>Время миссии:<div id="mission-time"></div></td>	<td>Угловая скорость:<div id="orbit-w"></div>	<td>Орбитальная скорость:<div id="orbit-v"></div>
+		<tr>
+			<td>Тень планеты:<div id="p-shadow"></div></td>	<td>Тень атмосферы:<div id="a-shadow"></div>	<td><div id="orbit-v"></div>
+
+</div>
 	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 	<script src="orbit_view.js"></script>
 </body>
