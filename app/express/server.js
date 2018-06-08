@@ -3,13 +3,15 @@ http = require("http"),
 path = require("path"),
 tools = require("./my_modules/tools"),
 station_objects = require("./my_modules/station_objects"),
+mOrbit = require("./my_modules/orbit.js"),
 post_routes	= require("./my_modules/post_module"),
 app,
 client_dir,
 mission_time,
-time_scale=	5,
+time_scale=	15,
 view_scale=	15000,
-Mars	  = new Mars();
+Mars	  = new Mars(),
+orbital_objects = [];
 
 // Создаем http-сервер на основе Express
 // и заставляем его слушать на порте 3000
@@ -48,30 +50,38 @@ app.get("/mission_time.json", function (req, res) {
 });
 
 
-app.get("/get_solar_batteries.json", function (req, res) {
+app.get("/get_solar_batteries.json", function (req, res) { // Получение состояния солнечных батарей
 	var batteries = station.SkySpear.SolarBatteries;
 	res.json(batteries);
 });
 
-app.get("/get_orbit.json", function (req, res) {
+app.get("/get_orbit.json", function (req, res) {  //получение орбиты станции
 	var orbit = station.orbit;
 	res.json(orbit);
 });
 
-app.get("/get_view_scale.json", function (req, res) {
+app.get("/get_view_scale.json", function (req, res) {  // получение масштаба орбитальной карты
 	res.json(view_scale);
 });
 
-app.get("/get_mars.json", function (req, res) {
+app.get("/get_mars.json", function (req, res) {  // получение объекта планеты
 	res.json(Mars);
 });
 
-app.post("/set_orbit.json", function (req, res) {
+app.get("/get_empty_orbit_object.json", function (req, res) {  // получение объекта планеты
+	res.json(new mOrbit.orbit());
+	console.log("New orbit");
+});
+
+
+// ------------------------------------------- Маршруты POST ------------------------------------------------------
+
+app.post("/set_orbit.json", function (req, res) {	// установка орбиты напрямую через параметры
 	station.orbit.set_orbit(req.body);
 	res.json({"message":" Орбита скорректирована"});
 });
 
-app.post("/set_scale.json", function (req, res) {
+app.post("/set_scale.json", function (req, res) { // установка масштаба орбитальной карты
 	view_scale = req.body.scale;
 });
 
