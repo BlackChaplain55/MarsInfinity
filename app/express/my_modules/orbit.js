@@ -84,4 +84,16 @@ function DegToRad(deg){
 		return deg/180*Math.PI;
 }
 
+function set_orbital_object(db,data)
+{
+
+}
+
+function load_orbital_objects(db,data)
+{
+
+}
+
 module.exports.orbit = orbit;
+module.exports.set_orbital_object(db,data);
+module.exports.load_orbital_object(data);

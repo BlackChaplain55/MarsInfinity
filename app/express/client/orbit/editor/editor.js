@@ -4,10 +4,13 @@ var cur_object={};
 var cur_index=0;
 var objects_count=0;
 var objects={};
+var isNew=false;
 
   function get_empty_object(){
     $.getJSON("/get_empty_orbit_object.json",	function (data) {
-      cur_object = data;
+      cur_object  = data;
+      cur_index   = objects_count;
+      isNew       = true;
       fill();
     });
   }
@@ -21,8 +24,8 @@ var objects={};
   }
 
   function set_object(){
-    var msg_data = {"object":cur_object};
-    $.post("/set_orbit_objects.json", msg_data, function (response) {
+    var msg_data = {"object":cur_object;"index":cur_index};
+    $.post("/set_orbit_object.json", msg_data, function (response) {
     });
   }
 
@@ -41,7 +44,11 @@ var objects={};
     $("#surface").val(cur_object.surface);
     $("#geoloc_w").val(cur_object.geoloc_w);
     $("#geoloc_d").val(cur_object.geoloc_d);
-    $("#obj_count").text(""+cur_index+"/"+objects_count);
+    is isNew{
+      $("#obj_count").text("Новый");
+    }else{
+      $("#obj_count").text(""+cur_index+"/"+objects_count);
+    }
   }
 };
 $(document).ready(main);

@@ -1,10 +1,10 @@
 var express = require("express"),
+var Datastore = require('nedb'),
 http = require("http"),
 path = require("path"),
 tools = require("./my_modules/tools"),
 station_objects = require("./my_modules/station_objects"),
 mOrbit = require("./my_modules/orbit.js"),
-post_routes	= require("./my_modules/post_module"),
 app,
 client_dir,
 mission_time,
@@ -12,6 +12,9 @@ time_scale=	15,
 view_scale=	15000,
 Mars	  = new Mars(),
 orbital_objects = [];
+
+var db_orbitalobjects= new Datastore({filename : 'orbital_objects'});
+ db_orbitalobjects.loadDatabase();
 
 // Создаем http-сервер на основе Express
 // и заставляем его слушать на порте 3000
@@ -83,6 +86,10 @@ app.post("/set_orbit.json", function (req, res) {	// установка орби
 
 app.post("/set_scale.json", function (req, res) { // установка масштаба орбитальной карты
 	view_scale = req.body.scale;
+});
+
+app.post("/set_orbit_object.json", function (req, res) { // установка масштаба орбитальной карты
+	mOrbit.set_orbital_object( db_orbitalobjects,req.body);
 });
 
 // Обработка периодических событий
