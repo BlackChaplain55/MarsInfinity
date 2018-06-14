@@ -84,16 +84,37 @@ function DegToRad(deg){
 		return deg/180*Math.PI;
 }
 
-function set_orbital_object(db,data)
+function set_orbital_object(db,data,arr)
 {
-
+	new_object = data.object;
+	if (data.index==0){
+		arr.push(new_object);
+		db.insert(new_object);
+		console.log("Новый орбитальный объект добавлен в базу: "+new_object.name)
+	}else{
+		arr[data.index]=new_object;
+		db.update({Name: new_object.name}, new_object, {});
+		console.log(data.index)
+		console.log("Орбитальный объект обновлен: "+new_object.name)
+	}
 }
 
-function load_orbital_objects(db,data)
+function load_orbital_objects_cb(db,callbackFn)
 {
+	console.log("Loading orbital object database...")
+	db.find({}, function (err, docs) {
+	//console.log(typeof(docs));
+		callbackFn(docs);
+	})
+}
 
+function load_orbital_objects(db,arr){
+		load_orbital_objects_cb(db,function(docs){
+			arr = docs;
+			console.log(arr.length+" orbital object loaded");
+		})
 }
 
 module.exports.orbit = orbit;
-module.exports.set_orbital_object(db,data);
-module.exports.load_orbital_object(data);
+module.exports.set_orbital_object = set_orbital_object;
+module.exports.load_orbital_objects = load_orbital_objects;

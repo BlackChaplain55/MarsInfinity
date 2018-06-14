@@ -1,5 +1,5 @@
 electricity = require("./electricity");
-orbit_module		= require("./orbit.js")
+orbit_module		= require("./orbit.js");
 
 Citadel = new Object();
 
@@ -41,7 +41,7 @@ module.exports.init_station = function(){
 	console.log();
 	init_skyspear(Citadel.SkySpear);
 
-	
+
 };
 
 function init_skyspear(SkySpear){

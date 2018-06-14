@@ -1,5 +1,5 @@
 var express = require("express"),
-var Datastore = require('nedb'),
+Datastore = require('nedb'),
 http = require("http"),
 path = require("path"),
 tools = require("./my_modules/tools"),
@@ -13,9 +13,17 @@ view_scale=	15000,
 Mars	  = new Mars(),
 orbital_objects = [];
 
-var db_orbitalobjects= new Datastore({filename : 'orbital_objects'});
- db_orbitalobjects.loadDatabase();
+console.clear();
+console.log("------------------- MARS: Infinity backend system -------------------")
+console.log();
+console.log("Data preload begin...")
+console.log();
 
+var db_orbitalobjects= new Datastore({filename : 'orbital_objects'});
+db_orbitalobjects.loadDatabase();
+console.log("Loading orbital object database...")
+mOrbit.load_orbital_objects(db_orbitalobjects,orbital_objects);
+//console.log(orbital_objects.length+" orbital object loaded");
 // Создаем http-сервер на основе Express
 // и заставляем его слушать на порте 3000
 app = express();
@@ -71,11 +79,15 @@ app.get("/get_mars.json", function (req, res) {  // получение объе�
 	res.json(Mars);
 });
 
-app.get("/get_empty_orbit_object.json", function (req, res) {  // получение объекта планеты
+app.get("/get_empty_orbit_object.json", function (req, res) {  // получение пустого объекта орбиты
 	res.json(new mOrbit.orbit());
-	console.log("New orbit");
+	//console.log("New orbit");
 });
 
+app.get("/get_orbit_objects.json", function (req, res) {  // получение пустого объекта орбиты
+	res.json(orbital_objects);
+	console.log(orbital_objects);
+});
 
 // ------------------------------------------- Маршруты POST ------------------------------------------------------
 
@@ -88,8 +100,8 @@ app.post("/set_scale.json", function (req, res) { // установка масш
 	view_scale = req.body.scale;
 });
 
-app.post("/set_orbit_object.json", function (req, res) { // установка масштаба орбитальной карты
-	mOrbit.set_orbital_object( db_orbitalobjects,req.body);
+app.post("/set_orbit_object.json", function (req, res) { // добавление орбитального объекта в массив и бд
+	mOrbit.set_orbital_object( db_orbitalobjects,req.body,orbital_objects);
 });
 
 // Обработка периодических событий
