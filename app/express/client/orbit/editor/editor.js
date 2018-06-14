@@ -21,6 +21,7 @@ var isNew=false;
       objects_count = objects.length;
       console.log(data)
       if (objects_count>0){
+        cur_object=objects[0];
         fill();
       }
     });
@@ -51,6 +52,21 @@ var isNew=false;
     //console.log("New object")
   })
 
+  //Prev_object
+   $("#Prev_object").on("click", function () {
+    if (cur_index>0){cur_index = --cur_index}
+    cur_object = objects[cur_index];
+    fill();
+    //console.log("New object")
+  })
+  //Next_object
+   $("#Next_object").on("click", function () {
+    if (cur_index<objects_count-1){cur_index = ++cur_index}
+    cur_object = objects[cur_index];
+    fill();
+    //console.log("New object")
+  })
+
   function fill(){
     $("#apogee").val(cur_object.apogee);
     $("#perigee").val(cur_object.perigee);
@@ -64,7 +80,7 @@ var isNew=false;
     if (isNew) {
       $("#obj_count").text("Новый");
     }else{
-      $("#obj_count").text(""+cur_index+"/"+objects_count);
+      $("#obj_count").text(""+(cur_index+1)+"/"+objects_count);
     }
   }
 

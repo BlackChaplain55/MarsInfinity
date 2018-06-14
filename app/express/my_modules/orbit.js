@@ -109,9 +109,11 @@ function load_orbital_objects_cb(db,callbackFn)
 }
 
 function load_orbital_objects(db,arr){
+		console.log(typeof(arr));
+		console.log(arr)
 		load_orbital_objects_cb(db,function(docs){
-			arr = docs;
-			console.log(arr.length+" orbital object loaded");
+			orbital_objects = docs;
+			console.log(orbital_objects.length+" orbital object loaded");
 		})
 }
 

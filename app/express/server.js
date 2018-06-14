@@ -10,8 +10,8 @@ client_dir,
 mission_time,
 time_scale=	15,
 view_scale=	15000,
-Mars	  = new Mars(),
-orbital_objects = [];
+Mars	  = new Mars();
+global.orbital_objects = [];
 
 console.clear();
 console.log("------------------- MARS: Infinity backend system -------------------")
@@ -23,7 +23,7 @@ var db_orbitalobjects= new Datastore({filename : 'orbital_objects'});
 db_orbitalobjects.loadDatabase();
 console.log("Loading orbital object database...")
 mOrbit.load_orbital_objects(db_orbitalobjects,orbital_objects);
-//console.log(orbital_objects.length+" orbital object loaded");
+console.log(orbital_objects.length+" orbital object loaded");
 // Создаем http-сервер на основе Express
 // и заставляем его слушать на порте 3000
 app = express();
