@@ -19,18 +19,26 @@ var isNew=false;
     $.getJSON("/get_orbit_objects.json",	function (data) {
       objects = data;
       objects_count = objects.length;
-      console.log(data)
+      //console.log(data)
       if (objects_count>0){
         cur_object=objects[0];
+        cur_index=1;
         fill();
       }
     });
   }
 
   function set_object(){
-    var msg_data = {"object":cur_object,"index":cur_index};
+    var msg_data = {"object":cur_object,"index":cur_index,"del":false};
     $.post("/set_orbit_object.json", msg_data, function (response) {
     });
+    //var last_index=cur_index;
+    console.log("Update success")
+    if (isNew){
+      isNew=false;
+      get_objects();
+      console.log("New object saved")
+    }
   }
 
   $("#New_object").on("click", function () {
@@ -54,17 +62,23 @@ var isNew=false;
 
   //Prev_object
    $("#Prev_object").on("click", function () {
-    if (cur_index>0){cur_index = --cur_index}
-    cur_object = objects[cur_index];
+    if (cur_index>1){cur_index = --cur_index}
+    cur_object = objects[cur_index-1];
     fill();
     //console.log("New object")
   })
   //Next_object
    $("#Next_object").on("click", function () {
-    if (cur_index<objects_count-1){cur_index = ++cur_index}
-    cur_object = objects[cur_index];
+    if (cur_index<objects_count){cur_index = ++cur_index}
+    cur_object = objects[cur_index-1];
     fill();
     //console.log("New object")
+  })
+
+  $("#Del_object").on("click", function () {
+    var msg_data = {"object":cur_object,"index":cur_index,"del":true};
+    $.post("/set_orbit_object.json", msg_data, function (response) {
+    });
   })
 
   function fill(){
@@ -80,7 +94,7 @@ var isNew=false;
     if (isNew) {
       $("#obj_count").text("Новый");
     }else{
-      $("#obj_count").text(""+(cur_index+1)+"/"+objects_count);
+      $("#obj_count").text(""+(cur_index)+"/"+objects_count);
     }
   }
 

@@ -14,16 +14,16 @@ Mars	  = new Mars();
 global.orbital_objects = [];
 
 console.clear();
-console.log("------------------- MARS: Infinity backend system -------------------")
+console.log("------------------- <MARS: Infinity> backend system -------------------")
 console.log();
-console.log("Data preload begin...")
+console.log("Data preload initiated...")
 console.log();
 
 var db_orbitalobjects= new Datastore({filename : 'orbital_objects'});
 db_orbitalobjects.loadDatabase();
-console.log("Loading orbital object database...")
+//console.log("Loading orbital object database...")
 mOrbit.load_orbital_objects(db_orbitalobjects,orbital_objects);
-console.log(orbital_objects.length+" orbital object loaded");
+//console.log(orbital_objects.length+" orbital object loaded");
 // Создаем http-сервер на основе Express
 // и заставляем его слушать на порте 3000
 app = express();
@@ -86,7 +86,7 @@ app.get("/get_empty_orbit_object.json", function (req, res) {  // получен
 
 app.get("/get_orbit_objects.json", function (req, res) {  // получение пустого объекта орбиты
 	res.json(orbital_objects);
-	console.log(orbital_objects);
+	//console.log(orbital_objects);
 });
 
 // ------------------------------------------- Маршруты POST ------------------------------------------------------
@@ -101,7 +101,7 @@ app.post("/set_scale.json", function (req, res) { // установка масш
 });
 
 app.post("/set_orbit_object.json", function (req, res) { // добавление орбитального объекта в массив и бд
-	mOrbit.set_orbital_object( db_orbitalobjects,req.body,orbital_objects);
+	mOrbit.set_orbital_object(db_orbitalobjects,req.body,orbital_objects);
 });
 
 // Обработка периодических событий
