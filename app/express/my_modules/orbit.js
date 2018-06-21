@@ -51,6 +51,8 @@ orbit.prototype.check_shadow = function (){
 
 //функция вычисления орбитальной и угловой скорости. апогей и перигей условны - апогей находится в точке отсчета, перигей напротив.
 orbit.prototype.calc_speed = function (){
+	//console.log(this.w+" - "+typeof(this.w));
+	//console.log(this.h+" - "+typeof(this.h));
 	var x = this.a * Math.cos(DegToRad(this.w));
 	//console.clear()
 	if (this.shift>0) {
@@ -73,11 +75,12 @@ orbit.prototype.calc_speed = function (){
 			this.h					= Math.sqrt(Math.pow(Math.abs(x)-this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
 		}
 	}
+	//console.log(this.b+" - "+typeof(this.b));
 	this.v					= Math.sqrt(G*M/(this.h));
 	this.w_speed		= this.v/this.h*180/Math.PI;
-	var cur_h=(this.h-R)/1000
-	var cur_x=(x-R)/1000
-//	console.log("a",(this.a-R)/1000,"/b", (this.b-R)/1000, "/w",this.w.toFixed(0)," x ",cur_x.toFixed(0)," shift ",this.shift, " h ", cur_h.toFixed(0))
+	//var cur_h=(this.h-R)/1000
+	//var cur_x=(x-R)/1000
+	//	console.log("a",(this.a-R)/1000,"/b", (this.b-R)/1000, "/w",this.w.toFixed(0)," x ",cur_x.toFixed(0)," shift ",this.shift, " h ", cur_h.toFixed(0))
 }
 
 function DegToRad(deg){
@@ -97,6 +100,8 @@ function set_orbital_object(db,data,arr){
 			console.log("New orbital object: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 		}else{
 			arr[data.index-1]=new_object;
+			arr[data.index-1].calc_speed = orbit.prototype.calc_speed;
+			arr[data.index-1].check_shadow = orbit.prototype.check_shadow;
 			db.update({name: new_object.name}, new_object, {},function(){});
 			console.log("Orbital object updated: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 		};
@@ -116,6 +121,34 @@ function load_orbital_objects(db,arr){
 		load_objects_cb(db,function(docs){
 			console.log("Loading orbital object database...");
 			orbital_objects = docs;
+			orbital_objects.forEach(function(item, i, arr){
+			item.apogee 		= item.apogee==undefined?0:+item.apogee;
+			item.perigee 		= item.perigee==undefined?0:+item.perigee;
+			item.a 				= (item.perigee+item.apogee)/2
+			item.b 				= item.b==undefined?0:+item.b;
+			item.shift			= (+item.apogee-item.perigee)/2;
+			item.h				= item.apogee;
+			item.F      		= item.F==undefined?0:+item.F;
+			item.P 				= item.P==undefined?0:+item.P;
+			item.w 				= item.w==undefined?0:+item.w;
+			item.v				= item.v==undefined?0:+item.v;
+			item.w_speed		= item.w_speed==undefined?0:+item.w_speed;
+			item.geoloc_w		= item.geoloc_w==undefined?0:+item.geoloc_w;
+			item.geoloc_d		= item.geoloc_d==undefined?0:+item.geoloc_d;
+			if (item.surfase=="true"){
+				item.w = item.geoloc_w;
+				item.a=R;
+				item.b=R;
+				item.h=R;
+				item.apogee=R;
+				item.perigee=R;
+			}
+			item.calc_speed = orbit.prototype.calc_speed;
+			item.check_shadow = orbit.prototype.check_shadow;
+			//console.log(item.w+" - "+typeof(item.w));
+			//console.log(item.h+" - "+typeof(item.h));
+			});
+			
 			console.log(orbital_objects.length+" orbital object loaded");
 		})
 }
@@ -123,3 +156,4 @@ function load_orbital_objects(db,arr){
 module.exports.orbit = orbit;
 module.exports.set_orbital_object = set_orbital_object;
 module.exports.load_orbital_objects = load_orbital_objects;
+

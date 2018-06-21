@@ -17,11 +17,19 @@ var cx=canvas_width/2+cam_shift_y;;
 var cxs;
 var cys;
 const R = 3389.5*1000;
+var objects={};
+var objects_count=0;
 
 
 var main = function () {
 "use strict";
 	w=0;
+	function get_objects(){
+    	$.getJSON("/get_orbit_objects.json",	function (data) {
+     	objects = data;
+      	objects_count = objects.length;
+		}
+	}
 
 	var plot = function() {
 
@@ -252,6 +260,31 @@ var main = function () {
         ctx.fillText("Цитадель", x, y);
 		//ctx.stroke();
 
+		//etc objects
+
+		objects.forEach(function(item,i,arr){
+			if (item.surface=="true"){
+
+			}else{
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = "#444444";
+				ctx.setLineDash([1,6]);
+				ctx.beginPath();
+				var phobos ={};
+				ctx.ellipse(cx, cy,item.a, item.b, DegToRad(item.F+27), 0, DegToRad(360),true);
+				item.x = (item.a * Math.cos(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))-(item.b * Math.sin(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+cx;
+				item.y = (item.a * Math.cos(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+(item.b * Math.sin(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))+cy;
+				ctx.stroke();
+				ctx.fillStyle = "#cccccc"
+				ctx.beginPath();
+				ctx.arc(item.x,  item.y, 3, 0, Math.PI*2, true);
+				ctx.fill();
+				ctx.font = "12px Verdana";
+				ctx.fillStyle = "white";
+		        ctx.fillText("Фобос", item.x-25, item.y-4);	
+			}
+		});
+
 		requestAnimationFrame(plot);
 	};
 
@@ -361,6 +394,8 @@ var main = function () {
 		$.getJSON("/mission_time.json",	function (value) {
 			mission_time = value;
 		});
+
+		get_objects();
 
 		fill();
 		//plot();
