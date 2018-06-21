@@ -29,7 +29,7 @@ var isNew=false;
   }
 
   function set_object(){
-    var msg_data = {"object":cur_object,"index":cur_index,"del":false};
+    var msg_data = {"object":cur_object,"index":cur_index,"del":"false"};
     $.post("/set_orbit_object.json", msg_data, function (response) {
     });
     //var last_index=cur_index;
@@ -76,9 +76,10 @@ var isNew=false;
   })
 
   $("#Del_object").on("click", function () {
-    var msg_data = {"object":cur_object,"index":cur_index,"del":true};
+    var msg_data = {"object":cur_object,"index":cur_index,"del":"true"};
     $.post("/set_orbit_object.json", msg_data, function (response) {
     });
+    get_objects();
   })
 
   function fill(){

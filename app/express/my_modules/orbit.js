@@ -86,24 +86,24 @@ function DegToRad(deg){
 
 function set_orbital_object(db,data,arr){
 	new_object = data.object;
-	if (data.del){
+	if (data.del=="true"){
 			db.remove({name: new_object.name},{})
-			console.log("Orbital object removed: "+new_object.name)
-			orbital_objects.slice(data.index-1,data.index-1);
+			orbital_objects.splice(data.index-1,data.index-1);
+			console.log("Orbital object removed: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 	}else{
 		if (data.index==0){
 			arr.push(new_object);
 			db.insert(new_object);
-			console.log("New orbital object: "+new_object.name)
+			console.log("New orbital object: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 		}else{
 			arr[data.index-1]=new_object;
 			db.update({name: new_object.name}, new_object, {},function(){});
-			console.log("Orbital object updated: "+new_object.name)
+			console.log("Orbital object updated: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 		};
 	};
 };
 
-function load_orbital_objects_cb(db,callbackFn)
+function load_objects_cb(db,callbackFn)
 {
 	db.find({}, function (err, docs) {
 	//console.log(typeof(docs));
@@ -113,7 +113,7 @@ function load_orbital_objects_cb(db,callbackFn)
 
 function load_orbital_objects(db,arr){
 
-		load_orbital_objects_cb(db,function(docs){
+		load_objects_cb(db,function(docs){
 			console.log("Loading orbital object database...");
 			orbital_objects = docs;
 			console.log(orbital_objects.length+" orbital object loaded");
