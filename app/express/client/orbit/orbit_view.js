@@ -27,8 +27,8 @@ var main = function () {
 	function get_objects(){
     	$.getJSON("/get_orbit_objects.json",	function (data) {
      	objects = data;
-      	objects_count = objects.length;
-		}
+      objects_count = objects.length;
+		})
 	}
 
 	var plot = function() {
@@ -96,7 +96,7 @@ var main = function () {
       	};
 
       	if ((90>=Mars_mars_w2&&Mars_mars_w2>=0)||(270>=Mars_mars_w2&&Mars_mars_w2>=180)){
- 			ctx.beginPath();
+ 			    ctx.beginPath();
       		ctx.ellipse(cx, cy,  R/scale, R/scale*Mars_w_hemi2, DegToRad(117), 2 * Math.PI, Math.PI);
       		ctx.stroke();
       	} else {
@@ -105,24 +105,22 @@ var main = function () {
       		ctx.stroke();
       	};
 
-      	//console.log("Mars.mars_w "+Mars.mars_w+" Mars_mars_w2 "+Mars_mars_w2);
-      	//var RotShift = Mars.mars_w>180?Mars.mars_w-180:Mars.mars_w;
       	var RotShift = (Mars.mars_w*2.5)%5;
 
-      	ctx.beginPath();
-      	ctx.ellipse(cx, cy, R/scale, R/scale/3, DegToRad(27), 2 * Math.PI+DegToRad(RotShift), Math.PI);
-      	ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, R/scale, R/scale/3, DegToRad(27), 2 * Math.PI+DegToRad(RotShift), Math.PI);
+    ctx.stroke();
 
-      	ctx.beginPath();
+    ctx.beginPath();
 		ctx.ellipse(cx+Math.sin(DegToRad(27))*R/scale/2, cy-Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), 2 * Math.PI-0.2+DegToRad(RotShift), Math.PI+0.2);
-      	ctx.stroke();
+    ctx.stroke();
 
-      	ctx.beginPath();
+    ctx.beginPath();
 		ctx.ellipse(cx-Math.sin(DegToRad(27))*R/scale/2, cy+Math.cos(DegToRad(27))*R/scale/2, R/scale*0.845, R/scale/3*0.845, DegToRad(27), 2 * Math.PI+0.2+DegToRad(RotShift), Math.PI-0.2);
-      	ctx.stroke();
+    ctx.stroke();
 
-      	ctx.beginPath();
-      	ctx.moveTo(cx+Math.sin(DegToRad(-27))*(R/scale+20), cy+Math.cos(DegToRad(-27))*(R/scale+20));
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.sin(DegToRad(-27))*(R/scale+20), cy+Math.cos(DegToRad(-27))*(R/scale+20));
 		ctx.lineTo(cx-Math.sin(DegToRad(-27))*(R/scale+20),  cy-Math.cos(DegToRad(-27))*(R/scale+20));
 		ctx.stroke();
 
@@ -262,28 +260,72 @@ var main = function () {
 
 		//etc objects
 
-		objects.forEach(function(item,i,arr){
-			if (item.surface=="true"){
+		try{
+      objects.forEach(function(item,i,arr){
+			       if (item.surface=="true"){
 
-			}else{
-				ctx.lineWidth = 1;
-				ctx.strokeStyle = "#444444";
-				ctx.setLineDash([1,6]);
-				ctx.beginPath();
-				var phobos ={};
-				ctx.ellipse(cx, cy,item.a, item.b, DegToRad(item.F+27), 0, DegToRad(360),true);
-				item.x = (item.a * Math.cos(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))-(item.b * Math.sin(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+cx;
-				item.y = (item.a * Math.cos(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+(item.b * Math.sin(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))+cy;
-				ctx.stroke();
-				ctx.fillStyle = "#cccccc"
-				ctx.beginPath();
-				ctx.arc(item.x,  item.y, 3, 0, Math.PI*2, true);
-				ctx.fill();
-				ctx.font = "12px Verdana";
-				ctx.fillStyle = "white";
-		        ctx.fillText("Фобос", item.x-25, item.y-4);	
-			}
-		});
+              if (item.geoloc_d>0){
+                var surf_cx = cx+Math.sin(DegToRad(27))*R/scale/2;
+                var surf_cy = cy-Math.cos(DegToRad(27))*R/scale/2;
+              }else{
+                var surf_cx = cx-Math.sin(DegToRad(27))*R/scale/2;
+                var surf_cy = cy+Math.cos(DegToRad(27))*R/scale/2;
+              }
+              var surf_a = R/scale*Math.cos(DegToRad(item.geoloc_d))*0.853;
+              var surf_b = R/scale/3*Math.cos(DegToRad(item.geoloc_d))*0.853;
+
+              ctx.beginPath();
+              ctx.ellipse(surf_cx, surf_cy, surf_a, surf_b, DegToRad(27), 2 * Math.PI+0.2, Math.PI-0.2);
+              ctx.stroke();
+              //console.log(surf_cx+" - "+surf_cy+" - "+surf_a+" - "+surf_b);
+
+       				item.x = (surf_a * Math.cos(DegToRad(item.w)))*Math.cos(DegToRad(27))-(surf_b * Math.sin(DegToRad(item.w)))*Math.sin(DegToRad(27))+surf_cx;
+       				item.y = (surf_a * Math.cos(DegToRad(item.w)))*Math.sin(DegToRad(27))+(surf_b * Math.sin(DegToRad(item.w)))*Math.cos(DegToRad(27))+surf_cy;
+
+              if (item.shadow==true){
+                ctx.fillStyle = "#777777";
+              }else{
+                ctx.fillStyle = "white"
+              };
+
+       				ctx.beginPath();
+       				ctx.arc(item.x,  item.y, 1, 0, Math.PI*2, true);
+       				ctx.fill();
+       				ctx.font = "12px Verdana";
+
+       		    ctx.fillText(item.name, item.x-25, item.y-4);
+      			}else{
+      				ctx.lineWidth = 1;
+      				ctx.strokeStyle = "#444444";
+      				ctx.setLineDash([1,6]);
+      				ctx.beginPath();
+      				ctx.ellipse(cx, cy,item.a/scale, item.b/scale/3, DegToRad(item.F+27), 0, DegToRad(360),true);
+              ctx.stroke();
+
+              var a = (item.a/scale);
+              var b = (item.b/scale/(3-2*Math.sin(DegToRad(item.P))));
+
+      				item.x = (a * Math.cos(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))-(b * Math.sin(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+cx;
+      				item.y = (a * Math.cos(DegToRad(item.w)))*Math.sin(DegToRad(item.F+27))+(b * Math.sin(DegToRad(item.w)))*Math.cos(DegToRad(item.F+27))+cy;
+
+              if (item.shadow==true){
+                ctx.fillStyle = "#777777";
+              }else{
+                ctx.fillStyle = "white"
+              };
+
+      				ctx.beginPath();
+      				ctx.arc(item.x,  item.y, 1, 0, Math.PI*2, true);
+      				ctx.fill();
+      				ctx.font = "12px Verdana";
+
+      		    ctx.fillText(item.name, item.x-25, item.y-4);
+              //console.log(item.name+" - "+item.a+" - "+item.b+" / "+phobos.a+" - "+phobos.b);
+      			}
+		  });
+    }catch(e){
+        console.log(e);
+    };
 
 		requestAnimationFrame(plot);
 	};
@@ -355,13 +397,15 @@ var main = function () {
 	})
 
 	$("#scale-up").on("click", function () {
-		var new_scale = +$("#scale-val").val()+1000;
-		SetScale(new_scale);
+		//var new_scale = +$("#scale-val").val()+1000;
+    scale=+scale+1000;
+	//	SetScale(new_scale);
 	})
 
 	$("#scale-down").on("click", function () {
-		var new_scale = +$("#scale-val").val()-1000;
-		SetScale(new_scale);
+		//var new_scale = +$("#scale-val").val()-1000;
+    scale=+scale-1000;
+	//	SetScale(new_scale);
 	})
 
 	function SetOrbit(apogee,perigee,b,f,p){
@@ -385,9 +429,9 @@ var main = function () {
 		$.getJSON("/get_orbit.json",	function (SOrbit) {
 			orbit = SOrbit;
 		});
-		$.getJSON("/get_view_scale.json",	function (value) {
-			scale = value;
-		});
+		//$.getJSON("/get_view_scale.json",	function (value) {
+		//	scale = value;
+		//});
 		$.getJSON("/get_Mars.json",	function (value) {
 			Mars = value;
 		});

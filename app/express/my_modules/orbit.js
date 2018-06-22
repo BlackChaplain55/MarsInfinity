@@ -26,7 +26,7 @@ function orbit(){
 
 //функция принудительной установки орбиты
 orbit.prototype.set_orbit = function (orbit_params){
-	this.b = +orbit_params.b+(orbit_params.apogee-this.apogee)*0.25+(orbit_params.perigee-this.perigee)*0.25;
+	this.b = +orbit_params.b+(+orbit_params.apogee-this.apogee)*0.25+(+orbit_params.perigee-this.perigee)*0.25;
 	this.perigee = +orbit_params.perigee;
 	this.apogee = +orbit_params.apogee;
 	this.F = +orbit_params.f;
@@ -62,21 +62,32 @@ orbit.prototype.calc_speed = function (){
 	//		this.h					= Math.sqrt(Math.pow(x+this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
 	//	}else {
 	//		console.log("Case 2")
-		this.h					= Math.sqrt(Math.pow(Math.abs(x+this.shift),2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+		if (this.surface=="true"){
+			this.h = R;
+		}else{
+			this.h					= Math.sqrt(Math.pow(Math.abs(x+this.shift),2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+		};
 	//	}
 
 	}else{
 		//console.log("Shift negative")
-		if (x>0&&Math.abs(x)>this.shift){
-			this.h					= Math.sqrt(Math.pow(x+this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
-		}else if(x>0&&Math.abs(x)>Shift){
-			this.h					= Math.sqrt(Math.pow(-Math.abs(x)-this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+	//	console.log(this.surface+" "+typeof(this.surface))
+		if (this.surface=="true"){
+			this.h = R;
+
 		}else{
-			this.h					= Math.sqrt(Math.pow(Math.abs(x)-this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+			if (x>0&&Math.abs(x)>this.shift){
+				this.h					= Math.sqrt(Math.pow(x+this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+			}else if(x>0&&Math.abs(x)>Shift){
+				this.h					= Math.sqrt(Math.pow(-Math.abs(x)-this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+			}else{
+				this.h					= Math.sqrt(Math.pow(Math.abs(x)-this.shift,2)+Math.pow(this.b * Math.sin(DegToRad(this.w)),2));
+			}
 		}
 	}
-	//console.log(this.b+" - "+typeof(this.b));
+
 	this.v					= Math.sqrt(G*M/(this.h));
+
 	this.w_speed		= this.v/this.h*180/Math.PI;
 	//var cur_h=(this.h-R)/1000
 	//var cur_x=(x-R)/1000
@@ -99,11 +110,18 @@ function set_orbital_object(db,data,arr){
 			db.insert(new_object);
 			console.log("New orbital object: "+new_object.name+". Objects in memory: "+orbital_objects.length)
 		}else{
+			//console.log(data.index);
+			//console.log(arr);
 			arr[data.index-1]=new_object;
+			arr[data.index-1].w=arr[data.index-1].surface=="true"?+arr[data.index-1].geoloc_w:0;
+			arr[data.index-1].v=0;
+			arr[data.index-1].h=arr[data.index-1].apogee;
+		//console.log(arr[data.index-1]);
 			arr[data.index-1].calc_speed = orbit.prototype.calc_speed;
 			arr[data.index-1].check_shadow = orbit.prototype.check_shadow;
 			db.update({name: new_object.name}, new_object, {},function(){});
 			console.log("Orbital object updated: "+new_object.name+". Objects in memory: "+orbital_objects.length)
+		//console.log("B: "+new_object.b);
 		};
 	};
 };
@@ -146,9 +164,9 @@ function load_orbital_objects(db,arr){
 			item.calc_speed = orbit.prototype.calc_speed;
 			item.check_shadow = orbit.prototype.check_shadow;
 			//console.log(item.w+" - "+typeof(item.w));
-			//console.log(item.h+" - "+typeof(item.h));
+			//console.log(item.name+" b:"+item.b);
 			});
-			
+
 			console.log(orbital_objects.length+" orbital object loaded");
 		})
 }
@@ -156,4 +174,3 @@ function load_orbital_objects(db,arr){
 module.exports.orbit = orbit;
 module.exports.set_orbital_object = set_orbital_object;
 module.exports.load_orbital_objects = load_orbital_objects;
-

@@ -28,7 +28,6 @@ mOrbit.load_orbital_objects(db_orbitalobjects,orbital_objects);
 // и заставляем его слушать на порте 3000
 app = express();
 
-
 client_dir = path.resolve(__dirname,"client");
 mission_time=0;
 
@@ -129,16 +128,19 @@ setInterval(function(){
 	Mars.mars_w = Mars.mars_w>360? 0:Mars.mars_w;
 	Mars.phobos_w = Mars.phobos_w+360/(((7*60)+39.2)*60*20)*time_scale*20;
 	Mars.phobos_w = Mars.phobos_w>360? 0:Mars.phobos_w;
-	console.clear();
+	//console.clear();
 	orbital_objects.forEach(function(item, i, arr){
 		//console.log(item.w_speed+"/"+item.w);
-		item.calc_speed();
+		if (item.surface=="false"){
+			item.calc_speed();
+		}else{
+			item.w_speed = 360/(24.6597*60*60*20);
+		}
 		//console.log(item.w_speed+"/"+item.w);
-		item.w = +item.w+item.w_speed*time_scale;			
+		item.w = +item.w+item.w_speed*time_scale*20;
 		item.w = item.w>360? 0:item.w;
 		item.check_shadow();
-		console.log(item.name+"/"+item.w);
-		//console.log(item);
+		//console.log(item.name+"/"+item.w+"/"+Mars.mars_w);
 	})
 },50)
 
