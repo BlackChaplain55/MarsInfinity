@@ -1,20 +1,81 @@
 
-module.exports.SolarBatterie = function (Name,MaxPower){
+module.exports.SolarBatterie = function (Name,MaxPower,Working,angle_toRoll = 0,angle_toJaw = 0){
 		this.Name = Name;
 		this.Exposition = 100;
 		this.MaxPower = MaxPower;
-		this.Working = true;
+		this.Working = Working;
 		this.AutoExposition = true;
 		this.Power = 0;
 		this.Efficiency = 100;
 		this.status = 'Норма';
+		this.angle_toRoll = 0;
+		this.angle_toJaw = 0;
 
-		this.CalcSBPower = function(shadow,atmo_shadow){
-			if (atmo_shadow){this.Efficiency=50}
-			if (shadow){this.Efficiency=0}
+		this.CalcSBPower = function(shadow,atmo_shadow,roll=0,jaw=0){
+		if (this.Working==true){
+			if (atmo_shadow==true||atmo_shadow=="true"){this.Efficiency=50}else{this.Efficiency=100}
+			if (shadow==true||shadow=="true"){this.Efficiency=0}else{this.Efficiency=100}
 			var random_deviation = Math.round((Math.random()*10-5)*100)/100;
 			this.Power = this.MaxPower*(this.Efficiency+random_deviation)/100*this.Exposition/100*0.43;
 			this.Power = +this.Power.toFixed(2);
-			//console.log('Solar batterie '+this.Name+' power output '+this.Power);
+			this.Power = this.Power*Math.cos(DegToRad(this.angle_toRoll-roll))*Math.cos(DegToRad(this.angle_toJaw-jaw));
+			this.Power = this.Power>0?this.Power:0;
+			//console.log(Math.cos(DegToRad(this.angle_toRoll-roll)))
+		}else{
+				this.Power=0;
+			}
 		};
-	};
+	}
+
+	module.exports.reactor = function (Name,MaxPower,Working){
+			this.Name = Name;
+			this.MaxPower = MaxPower;
+			this.Working = Working;
+			this.Power = 0;
+			this.Efficiency = 71;
+			this.Temp = 600;
+			this.Status = 'Норма';
+			this.Control_rod= 50;
+			this.Heat	= 0;
+			this.Self_cool = 0;
+			this.Mass = 900;
+			this.CalcPower = function(){
+			if (this.Working==true){
+				var random_deviation = Math.round((Math.random()*6-3)*100)/100;
+				this.Power = this.MaxPower*(this.Efficiency+random_deviation)/100;
+				this.Power = +this.Power.toFixed(2);
+				this.Power = this.Power>0?this.Power:0;
+			}else{
+					this.Power=0;
+				}
+			};
+			this.CalcHeat = function(time_scale=1){
+				this.Self_cool = 12*0.008*(this.Temp-270);
+				this.Heat = this.Power*Math.pow(2,this.Efficiency/15);
+				this.Temp = this.Temp+this.Heat*100/462/this.Mass*time_scale - this.Self_cool*100/462/this.Mass*time_scale;
+				//console.log("Heat="+this.Heat+" Temp="+this.Temp)
+				if (this.Temp<600){this.Temp=this.Temp+0.01}
+			}
+			this.TestExplosion = function(){
+				if (this.Efficiency>70){
+						R_Factor = Math.round((Math.random()*100)*100)/100;
+						E_Factor = this.Efficiency*R_Factor*this.Temp;
+						if (E_Factor>12000000){
+							console.log("Heat="+this.Heat+" Temp="+this.Temp)
+							console.log("R_Factor="+R_Factor+" E_Factor="+E_Factor);
+							console.log("EXPLOSION!!!");
+							return true;
+						}else{
+							return false;
+							//console.log(typeof(E_Factor));
+						}
+				}else{
+					return false;
+				}
+
+			}
+		}
+
+	function DegToRad(deg){
+		return deg/180*Math.PI;
+	}

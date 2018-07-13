@@ -5,10 +5,19 @@ Citadel = new Object();
 
 global.station = Citadel;
 
+class Cooler_system{
+  constructor(){
+    this.Radiators  =
+    this.PowerCons  = 0;
+  }
+}
 
 class Space_Module{
   constructor(Name) {
   	this.Name=Name;
+    this.Temp = 3;
+    this.InnerTemp = 296;
+    this.Mass = 0;
   	this.BatteriesCapacity=0;
   	this.PowerProduction=0;
   	this.SolarBatteries = [];
@@ -37,46 +46,171 @@ module.exports.init_station = function(){
 
 	Citadel.orbit = new orbit_module.orbit;
 
-	console.log("Station initialization succesfull. Waiting modules initializaton...")
+  Citadel.PowerProduction = 0;
+  Citadel.Cooler = new Cooler_system;
+
+	console.log("Инициализация основных параметров станции выполнена. Начинаем инициализацию модулей")
 	console.log();
 	init_skyspear(Citadel.SkySpear);
-
+  init_sakura(Citadel.Sakura)
+  init_constellation(Citadel.Constellation)
+  init_science(Citadel.Science)
+  init_federation(Citadel.Federation)
+  init_alabama(Citadel.Alabama)
 
 };
 
 function init_skyspear(SkySpear){
-	console.log('   <<< SkySpear initialization start >>>');
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A1',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A2',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B1',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B2',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B3',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B4',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C1',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C2',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C3',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C4',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D1',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D2',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D3',100));
-	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D4',100));
+	console.log('   <<< Инициализация модуля SkySpear >>>');
+  SkySpear.Mass = 240000;
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A1',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_A2',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B1',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_B2',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C1',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_C2',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D1',80,true));
+	SkySpear.SolarBatteries.push(new electricity.SolarBatterie('SB_D2',80,true));
 	SkySpear.SolarBatteries.forEach(function(item,i,arr){
 		item.CalcSBPower();
 		SkySpear.PowerProduction=SkySpear.PowerProduction+item.Power;
 	})
-	console.log('      SkySpear: Solar batteries initialized................................OK');
-	console.log('      SkySpear: Solar batteries power production....................'+SkySpear.PowerProduction.toFixed(2)+' kW');
-	console.log('   <<< SkySpear initialization finished succesfully >>>');
+  Citadel.PowerProduction = Citadel.PowerProduction + SkySpear.PowerProduction.toFixed(2);
+	console.log('      SkySpear: инициализация солнечных батарей............OK');
+	console.log('      SkySpear: выход мощности....................'+SkySpear.PowerProduction.toFixed(2)+' кВт');
+	console.log('   <<< SkySpear инициализирован успешно >>>');
+	console.log();
+};
+
+function init_sakura(Sakura){
+	console.log('   <<< Инициализация модуля Sakura>>>');
+  Sakura.Mass = 27000;
+	console.log('   <<< Sakura инициализирован успешно >>>');
+	console.log();
+};
+
+function init_constellation(Constellation){
+	console.log('   <<< Инициализация модуля Constellation>>>');
+  Constellation.Mass = 36000;
+	Constellation.SolarBatteries.push(new electricity.SolarBatterie('SB_1',20,false));
+	Constellation.SolarBatteries.push(new electricity.SolarBatterie('SB_2',20,false));
+
+	Constellation.SolarBatteries.forEach(function(item,i,arr){
+		item.CalcSBPower();
+		Constellation.PowerProduction=Constellation.PowerProduction+item.Power;
+	})
+	console.log('      Constellation: инициализация солнечных батарей............OK');
+	console.log('      Constellation: выход мощности....................'+Constellation.PowerProduction.toFixed(2)+' кВт');
+  console.log('      Constellation: солнечные батареи свернуты');
+	console.log('   <<< Constellation инициализирован успешно >>>');
+	console.log();
+};
+
+function init_science(Science){
+	console.log('   <<< Инициализация модуля Наука>>>');
+  Science.Mass = 29000;
+	Science.SolarBatteries.push(new electricity.SolarBatterie('SB_1',40,false));
+	Science.SolarBatteries.push(new electricity.SolarBatterie('SB_2',40,false));
+  Science.SolarBatteries.push(new electricity.SolarBatterie('SB_3',40,false));
+  Science.SolarBatteries.push(new electricity.SolarBatterie('SB_4',40,false));
+
+	Science.SolarBatteries.forEach(function(item,i,arr){
+		item.CalcSBPower();
+		Science.PowerProduction=Science.PowerProduction+item.Power;
+	})
+	console.log('      Science: инициализация солнечных батарей............OK');
+	console.log('      Science: выход мощности....................'+Science.PowerProduction.toFixed(2)+' кВт');
+  console.log('      Science: солнечные батареи свернуты');
+	console.log('   <<< Science инициализирован успешно >>>');
+	console.log();
+};
+
+function init_federation(Federation){
+	console.log('   <<< Инициализация модуля Федерация>>>');
+  Federation.Mass = 21000;
+	console.log('   <<< Федерация инициализирован успешно >>>');
+	console.log();
+};
+
+function init_alabama(Alabama){
+	console.log('   <<< Инициализация модуля Alabama>>>');
+  Alabama.Mass = 12000;
+  Alabama.Reactors = [];
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-1',40,true))
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-2',40,true))
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-3',40,true))
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-4',40,true))
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-5',40,true))
+  Alabama.Reactors.push(new electricity.reactor('KiloPower-6',40,true))
+  Alabama.Reactors.forEach(function(item,i,arr){
+		item.CalcPower();
+		Alabama.PowerProduction=Alabama.PowerProduction+item.Power;
+	})
+  Alabama.InnerTemp = 3;
+  console.log('      Alabama: инициализация ядерных реакторов Kilopower............OK');
+  console.log('      Alabama: выход мощности....................'+Alabama.PowerProduction.toFixed(2)+' кВт');
+  console.log('      Alabama: реакторы стабильны');
+	console.log('   <<< Alabama инициализирован успешно >>>');
 	console.log();
 };
 
 module.exports.recalc_electricity = function(){
+  //console.clear();
+  Citadel.SkySpear.PowerProduction=0;
+  Citadel.Alabama.PowerProduction=0;
+  Citadel.PowerProduction=0;
 	Citadel.SkySpear.SolarBatteries.forEach(function(item,i,arr){
-		item.CalcSBPower();
-		//console.log(item.Name+item.Power);
+		item.CalcSBPower(Citadel.orbit.shadow,Citadel.orbit.atmo_shadow);
+		//console.log(item.Name+"/"+item.Power);
 		Citadel.SkySpear.PowerProduction=Citadel.SkySpear.PowerProduction+item.Power;
-	})
+	});
+  Citadel.Alabama.Reactors.forEach(function(item,i,arr){
+		item.CalcPower(time_scale);
+		//console.log(item.Name+"/"+item.Power);
+		Citadel.Alabama.PowerProduction=Citadel.Alabama.PowerProduction+item.Power;
+	});
+  Citadel.PowerProduction=Citadel.SkySpear.PowerProduction+Citadel.Alabama.PowerProduction;
+  //console.log("Citadel.orbit.shadow:"+Citadel.orbit.shadow+" "+typeof(Citadel.orbit.shadow));
+  //console.log("Citadel.SkySpear.PowerProduction:"+Citadel.SkySpear.PowerProduction);
 };
+
+module.exports.recalc_heat = function(time_scale){
+  console.clear();
+  //Нагрев реакторов
+	 Citadel.Alabama.Reactors.forEach(function(item,i,arr){
+      item.CalcHeat(time_scale,);
+   })
+   if (Citadel.orbit.atmo_shadow==false){
+     //Нагрев от солнца
+     Citadel.SkySpear.Temp = Citadel.SkySpear.Temp+48000/Citadel.SkySpear.Mass*time_scale;
+     Citadel.Sakura.Temp = Citadel.Sakura.Temp+12000/Citadel.SkySpear.Mass*time_scale;
+     Citadel.Science.Temp =  Citadel.Science.Temp+16000/Citadel.SkySpear.Mass*time_scale;
+     Citadel.Constellation.Temp = Citadel.Constellation.Temp+20000/Citadel.Constellation.Mass*time_scale;
+     Citadel.Federation.Temp = Citadel.Federation.Temp+8000/Citadel.SkySpear.Mass*time_scale;
+   }
+     //Остывание в космос
+     Citadel.SkySpear.Temp = Citadel.SkySpear.Temp-12*0.008*(Citadel.SkySpear.Temp-270)/Citadel.SkySpear.Mass*time_scale;
+     Citadel.Sakura.Temp = Citadel.Sakura.Temp-12*0.008*(Citadel.Sakura.Temp-270)/Citadel.Sakura.Mass*time_scale;
+     Citadel.Science.Temp =  Citadel.Science.Temp-12*0.008*(Citadel.Science.Temp-270)/Citadel.Science.Mass*time_scale;
+     Citadel.Constellation.Temp = Citadel.Constellation.Temp-12*0.008*(Citadel.Constellation.Temp-270)/Citadel.Constellation.Mass*time_scale;
+     Citadel.Federation.Temp = Citadel.Federation.Temp-12*0.008*(Citadel.Federation.Temp-270)/Citadel.Federation.Mass*time_scale;
+  console.log(Citadel.orbit.atmo_shadow)
+  console.log("SkySpear      "+"Temp:"+Citadel.SkySpear.Temp.toFixed(2))
+  console.log("Sakura        "+"Temp:"+Citadel.Sakura.Temp.toFixed(2))
+  console.log("Science       "+"Temp:"+Citadel.Science.Temp.toFixed(2))
+  console.log("Constellation "+"Temp:"+Citadel.Constellation.Temp.toFixed(2))
+  console.log("Federation    "+"Temp:"+Citadel.Federation.Temp.toFixed(2))
+
+   //Перераспределение тепла между внутренним и внешним корпусом
+}
+
+module.exports.test_explosion = function(){
+  //console.clear();
+	 Citadel.Alabama.Reactors.forEach(function(item,i,arr){
+    // console.log(i);
+      var explosion = item.TestExplosion();
+   })
+}
 
 module.exports.recalc_g = function(){
 	Citadel.g = 10*Citadel.roll_speed^2;

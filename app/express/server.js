@@ -8,10 +8,12 @@ mOrbit = require("./my_modules/orbit.js"),
 app,
 client_dir,
 mission_time,
-time_scale=	15,
+counter =0,
+
 view_scale=	15000,
 Mars	  = new Mars();
 global.orbital_objects = [];
+global.time_scale=60;
 
 console.clear();
 console.log("------------------- <MARS: Infinity> backend system -------------------")
@@ -59,8 +61,11 @@ app.get("/mission_time.json", function (req, res) {
 	res.json(tools.num_to_time(mission_time));
 });
 
-
 app.get("/get_solar_batteries.json", function (req, res) { // Получение состояния солнечных батарей
+	res.json(station);
+});
+
+app.get("/get_station.json", function (req, res) { // Получение состояния солнечных батарей
 	var batteries = station.SkySpear.SolarBatteries;
 	res.json(batteries);
 });
@@ -106,8 +111,14 @@ app.post("/set_orbit_object.json", function (req, res) { // добавление
 // Обработка периодических событий
 
 setInterval(function () {
-	mission_time =+mission_time+time_scale*20;
+	mission_time =+mission_time+time_scale;
 
+	counter = ++counter;
+	if (counter%time_scale==0){
+		// ещесекундные события с учетом сжатия времени
+		station_objects.test_explosion();
+	}
+	if (counter>1000){counter=1000};
 	//console.clear();
 	//console.log("Mission_time: "+tools.num_to_time(mission_time));
 }, 1000);
@@ -115,29 +126,34 @@ setInterval(function () {
 setInterval(function () {
 	station_objects.recalc_electricity();
 	station_objects.recalc_g();
-},3000);
+},1000);
+
+setInterval(function () {
+	station_objects.recalc_heat(time_scale);
+},100);
 
 setInterval(function(){
 	//console.log("------------------")
 	//console.log(station.orbit.w)
-	station.orbit.w = station.orbit.w+station.orbit.w_speed*time_scale;
+	station.orbit.w = station.orbit.w+station.orbit.w_speed*time_scale/20;
 	station.orbit.w = station.orbit.w>360? 0:station.orbit.w;
 	station.orbit.check_shadow();
 	station.orbit.calc_speed();
-	Mars.mars_w = Mars.mars_w+360/(24.6597*60*60*20)*time_scale*20;
+	Mars.mars_w = Mars.mars_w+360/(24.6597*60*60*20)*time_scale;
 	Mars.mars_w = Mars.mars_w>360? 0:Mars.mars_w;
-	Mars.phobos_w = Mars.phobos_w+360/(((7*60)+39.2)*60*20)*time_scale*20;
+	Mars.phobos_w = Mars.phobos_w+360/(((7*60)+39.2)*60*20)*time_scale;
 	Mars.phobos_w = Mars.phobos_w>360? 0:Mars.phobos_w;
 	//console.clear();
 	orbital_objects.forEach(function(item, i, arr){
 		//console.log(item.w_speed+"/"+item.w);
 		if (item.surface=="false"){
 			item.calc_speed();
+			item.w = +item.w+item.w_speed*time_scale;
 		}else{
 			item.w_speed = 360/(24.6597*60*60*20);
+			item.w = +item.w+item.w_speed*time_scale;
 		}
 		//console.log(item.w_speed+"/"+item.w);
-		item.w = +item.w+item.w_speed*time_scale*20;
 		item.w = item.w>360? 0:item.w;
 		item.check_shadow();
 		//console.log(item.name+"/"+item.w+"/"+Mars.mars_w);
