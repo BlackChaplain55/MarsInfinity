@@ -1,0 +1,24 @@
+module.exports.Engine = function (){
+		this.trottle = Name;
+
+    this.ControlRodController1 = New Controller(true);
+    this.ControlRodController2 = New Controller(true);
+
+    this.ControlRodController1 = New Controller(true);
+
+		this.CalcThrust = function(){
+		};
+	}
+
+  ControlRod = function(){
+
+  this.State = 100;
+  this.Working = true;
+  }
+
+  Controller = function(working=true){};
+
+  Pump = function(working=true){
+    this.RPM = 0;
+    this.Temp = 293;
+  };

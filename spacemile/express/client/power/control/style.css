@@ -1,0 +1,18 @@
+body {
+    background-color: black;
+    color: yellow;
+}
+
+button {
+  background-color: #ff8737;
+  color: 'black';
+  transition: background-color 0.1s ease-out;
+  width: 140px;
+  height: 40px;
+  font-size: 14px;
+}
+
+button.is-active {
+  background-color: #35db2f;
+  color: 'red';
+}

@@ -1,0 +1,22 @@
+
+  h1 {
+   font-family: "MS Sans Serif";
+   color: #10a110;
+  }
+  p {
+   font-family: "MS Sans Serif";
+   color: #10a110;
+  }
+
+  table
+  {
+      border-color: #20f120;
+      border: 2px yellow;
+  }
+
+  td{
+      text-align: center;
+      font-family: "MS Sans Serif";
+      text-decoration-color: #10a110;
+      color: #20f120;
+  }

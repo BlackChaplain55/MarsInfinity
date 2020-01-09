@@ -1,0 +1,107 @@
+electricity = require("./electricity");
+
+Spaceship = new Object();
+
+global.station = Spaceship;
+
+
+module.exports.init_station = function(){
+
+	Spaceship.roll_speed = 0;
+	Spaceship.pitch_speed = 0;
+	Spaceship.yaw_speed = 0;
+	Spaceship.roll = 0;
+	Spaceship.pitch = 0;
+	Spaceship.yaw =0;
+	Spaceship.x_speed = 0;
+	Spaceship.y_speed = 0;
+	Spaceship.z_speed = 0;
+
+	Spaceship.OuterTemp = 293;
+	Spaceship.InnerTemp = 293;
+
+	Spaceship.PowerProduction = 0;
+	Spaceship.PowerConsumption = 0;
+
+  Spaceship.Mass = 12000;
+
+	Spaceship.SolarBatteries = [];
+	Spaceship.Batteries = [];
+	Spaceship.Consumers = [];
+	Spaceship.ExtPowers = [];
+
+	Spaceship.SolarBatteries.push(new electricity.SolarBatterie('SB_1',4,'false',0,90));
+	Spaceship.SolarBatteries.push(new electricity.SolarBatterie('SB_2',4,'false',0,270));
+	Spaceship.SolarBatteries.push(new electricity.SolarBatterie('SB_3',4,'false',90,90));
+	Spaceship.SolarBatteries.push(new electricity.SolarBatterie('SB_4',4,'false',90,270));
+
+	Spaceship.Batteries.push(new electricity.Batterie('Batt1',100,1200,'true'));
+	Spaceship.Batteries.push(new electricity.Batterie('Batt2',100,1200,'true'));
+	Spaceship.Batteries.push(new electricity.Batterie('Reserve',100,240,'false'));
+
+	Spaceship.ExtPowers.push(new electricity.ExtPower('Питание площадки',12,'false',800,800,'Отключено'))
+
+	Spaceship.Consumers.push(new electricity.Consumer('Бортовой компьютер','true',0.2));
+	Spaceship.Consumers.push(new electricity.Consumer('Бортовая электроника','true',0.8));
+	Spaceship.Consumers.push(new electricity.Consumer('Система вентиляции','true',4));
+	Spaceship.Consumers.push(new electricity.Consumer('Освещение','true',0.3));
+	Spaceship.Consumers.push(new electricity.Consumer('Система управления двигателем','false',2));
+	Spaceship.Consumers.push(new electricity.Consumer('Гиродин','true',3));
+	Spaceship.Consumers.push(new electricity.Consumer('Маневрирование','false',4));
+	Spaceship.Consumers.push(new electricity.Consumer('Лазерный дальномер минимум','false',0.1));
+	Spaceship.Consumers.push(new electricity.Consumer('Лазерный дальномер','false',1200));
+	Spaceship.Consumers.push(new electricity.Consumer('Связь','true',0.5));
+	Spaceship.Consumers.push(new electricity.Consumer('Связь активная','false',2.5));
+	Spaceship.Consumers.push(new electricity.Consumer('МедДиагностика','true',0.2));
+	Spaceship.Consumers.push(new electricity.Consumer('МедДиагностика активная','false',1.5));
+	Spaceship.Consumers.push(new electricity.Consumer('Отопление','true',4));
+	Spaceship.Consumers.push(new electricity.Consumer('Шлюзование','false',2));
+
+};
+
+module.exports.recalc_electricity = function(){
+  Spaceship.PowerProduction=0;
+	Spaceship.PowerConsumption=0;
+	Spaceship.SolarBatteries.forEach(function(item,i,arr){
+		item.CalcSBPower(true,Spaceship.roll,Spaceship.pitch,Spaceship.yaw);
+	  Spaceship.PowerProduction=Spaceship.PowerProduction+item.Power;
+	});
+
+	Spaceship.ExtPowers.forEach(function(item,i,arr){
+		if(item.Working=='true'){
+	  	Spaceship.PowerProduction=Spaceship.PowerProduction+item.Power;
+		};
+	});
+
+	Spaceship.Consumers.forEach(function(item,i,arr){
+		if(item.Working=='true'){
+	  	Spaceship.PowerConsumption=Spaceship.PowerConsumption+item.Power;
+		};
+	});
+
+	//if (Spaceship.PowerConsumption>Spaceship.PowerProduction){
+		var BattConsumption = Spaceship.PowerConsumption-Spaceship.PowerProduction;
+		var BattNum = 0;
+		Spaceship.Batteries.forEach(function(item,i,arr){
+			if (item.Working=='true'){
+				BattNum = BattNum + 1;
+			}});
+	//	};
+
+		Spaceship.Batteries.forEach(function(item,i,arr){
+			if (item.Working=='true'){
+				item.CalcPower(BattConsumption/BattNum);
+				Spaceship.PowerProduction=Spaceship.PowerProduction+item.Power;
+		}});
+};
+
+
+module.exports.set_SB = function(data){
+	Spaceship.SolarBatteries.forEach(function(item,i,arr){
+		item.Working=data[i].Working;
+	});
+};
+
+module.exports.recalc_heat = function(time_scale){
+
+}

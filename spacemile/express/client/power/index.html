@@ -1,0 +1,44 @@
+<head>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor=#000000>
+
+
+
+<h1 align=center><font family="Terminal" color=#20f120>СОЮЗ-ЛМ3. КОНТРОЛЬ БОРТОВЫХ СИСТЕМ<font></h1>
+<div class="sb-container">
+	<Table width=1240 border=1  bordercolor=#20f120 align=center valign=top>
+		<tr height = 20>
+			<td ColSpan=11 align = center> ВЫРАБОТКА И ХРАНЕНИЕ ЭНЕРГИИ<td>ИТОГО
+		<tr height = 50>
+			<td width = 220><td width = 100>Солнечная батарея 1<td width = 100>Солнечная батарея 2<td width = 100>Солнечная батарея 3<td width = 100>Солнечная батарея 4<td width =220>
+				<td width = 100>Блок АКБ 1<td width = 100>Блок АКБ 2<td width = 220>
+				<td width = 100>Резервная батарея <td width = 100>Внеш. источники<td>Баланс Энергии
+		<tr height = 50>
+			<td>Состояние(%) <td><div id="SBEff-1">ОШИБКА</div>	<td><div id="SBEff-2">ОШИБКА</div><td><div id="SBEff-3">ОШИБКА</div>	<td><div id="SBEff-4">ОШИБКА</div><td>Напряжение (В)
+				<td><div id="BattCur-1">ОШИБКА</div><td><div id="BattCur-1">ОШИБКА</div><td>Напряжение (В)
+				<td><div id="BattCur-R">ОШИБКА</div><td><div id="Cur-Ext">ОШИБКА</div><td><div id="PowerTotal">ОШИБКА</div> кВт
+		<tr height = 50>
+			<td>Мощность(кВт): <td><div id="SBPower-1">ОШИБКА</div>	<td><div id="SBPower-2">ОШИБКА</div><td><div id="SBPower-3">ОШИБКА</div>	<td><div id="SBPower-4">ОШИБКА</div>
+				<td>Остаточный заряд (кВт\ч)<td><div id="BattCap-1">ОШИБКА</div><td><div id="BattCap-2">ОШИБКА</div>
+				<td>Остаточный заряд (кВт\ч)<td><div id="BattCap-R">ОШИБКА</div><td><td>Общая выработка
+		<tr height = 50>
+			<td>Состояние<td><div id="SBStatus-1">ОШИБКА</div>	<td><div id="SBStatus-2">ОШИБКА</div><td><div id="SBStatus-3">ОШИБКА</div>	<td><div id="SBStatus-4">ОШИБКА</div>
+				<td>Состояние<td><div id="BattStatus-1">ОШИБКА</div><td><div id="BattStatus-2">ОШИБКА</div>
+				<td>Состояние<td><div id="BattStatus-R">ОШИБКА</div><td><div id="Status-Ext">ОШИБКА</div><td><div id="PowerProduction">ОШИБКА</div> кВт
+		<tr height = 20>
+				<td ColSpan=11 align = center> РАСХОД ЭНЕРГИИ<td>Общий расход
+		<tr height = 20>
+				<td> Бортовая электроника <td><div id="">ОШИБКА</div><td> Системы ЖО<td><div id="">ОШИБКА</div><td>Системы связи<td><div id="">ОШИБКА</div><td>Маневрир.<td><div id="">ОШИБКА</div>
+				<td>Навигация<td><div id="">ОШИБКА</div><td><td><div id="PowerConsumption">ОШИБКА</div> кВт
+
+	</Table>
+</div>
+</body>
+
+<script
+			  src="https://code.jquery.com/jquery-2.2.4.min.js"
+			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			  crossorigin="anonymous"></script>
+<script src="app.js"></script>

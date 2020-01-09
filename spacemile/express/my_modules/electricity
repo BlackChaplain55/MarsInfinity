@@ -1,0 +1,99 @@
+
+module.exports.SolarBatterie = function (Name,MaxPower,Working,angle_toRoll = 0,angle_toJaw = 0){
+		this.Name = Name;
+		this.MaxPower = MaxPower;
+		this.Working = Working;
+		this.Power = 0;
+		this.Efficiency = 100;
+		this.Status = 'Сложена';
+		this.angle_toRoll = angle_toRoll;
+		this.angle_toJaw = angle_toJaw;
+		this.angle_toPitch = 0;
+		this.Locked = 'false';
+
+		this.CalcSBPower = function(Working,roll=0,pitch=0,jaw=0){
+		if (this.Working=='true'){
+			var random_deviation = Math.round((Math.random()*10-5)*100)/100;
+			this.Power = this.MaxPower*(this.Efficiency+random_deviation)/100;
+			this.Power = +this.Power.toFixed(2);
+			this.Power = this.Power>0?this.Power:0;
+		}else{
+			this.Power=0;
+		}
+		};
+	};
+
+	module.exports.ExtPower = function (Name,Current,Working,Power,MaxPower,Status){
+			this.Name = Name;
+			this.Current = Current;
+			this.Working = Working;
+			this.Power = Power;
+			this.MaxPower = MaxPower;
+			this.Status = Status;
+	};
+
+	module.exports.Consumer = function (Name,Working,Power){
+			this.Name = Name;
+			this.Working = Working;
+			this.Power = Power;
+		}
+
+	module.exports.Batterie = function (Name,MaxPower,Capacity,Working){
+			this.Name = Name;
+			this.MaxPower = MaxPower;
+			this.Working = Working;
+			this.Power = 0;
+			this.Status = 'Отключена';
+			this.MaxCurrent = 14.5;
+			this.Current = this.MaxCurrent;
+			this.MaxCapacity = Capacity;
+			this.Capacity = this.MaxCapacity;
+
+			this.CalcPower = function(Consumption){
+				if (Consumption>0){
+
+				if (this.Working=='true'){
+					LostAmpers = (Consumption)/this.Current;
+						//console.log("РАЗР  "+this.Name+":"+ LostAmpers+" \ "+Consumption);
+					if (LostAmpers>MaxPower/this.Current){LostAmpers=MaxPower/this.Current};
+					this.Capacity = this.Capacity - LostAmpers;
+					this.Current = 14.5 - (this.MaxCapacity-this.Capacity)/this.MaxCapacity*5;
+
+					this.Power = this.Current*LostAmpers;
+					if (this.Current>9.5){
+						this.Status = 'Разряд';
+						this.Power = +this.Power.toFixed(6);
+					}else{
+						this.Power = 0;
+						this.Status = 'Разряжена';
+						this.Capacity = this.Capacity + LostAmpers;
+					};
+				}else{
+						this.Power=0;
+						this.Status = 'Отключена';
+					};
+				}else{
+					if (this.Working=='true'){
+						GainAmpers = (-1*Consumption)/this.Current;
+						//console.log("ЗАРЯД "+this.Name+":"+ GainAmpers+" \ "+Consumption);
+						if (GainAmpers>10){GainAmpers=10};
+						this.Capacity = this.Capacity + GainAmpers;
+						if (this.Capacity>this.MaxCapacity){
+							this.Capacity=this.MaxCapacity
+							this.Status = 'Заряжена';
+						}else{
+							this.Status = 'Заряд';
+						};
+						this.Current = 14.5 - (this.MaxCapacity-this.Capacity)/this.MaxCapacity*5;
+						this.Power = 0;
+					}else{
+							this.Power=0;
+							this.Status = 'Отключена';
+						};
+				};
+			};
+		}
+
+	function DegToRad(deg){
+		return deg/180*Math.PI;
+	}
